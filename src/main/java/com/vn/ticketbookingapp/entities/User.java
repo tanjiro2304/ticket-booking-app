@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
     @Id
-    private Long userId;
+    private String userId;
 
     @Column(name="id_type")
     private String idType;

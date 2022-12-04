@@ -3,16 +3,16 @@ package com.vn.ticketbookingapp.modules.login;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import com.vaadin.flow.theme.lumo.Lumo;
 import com.vn.ticketbookingapp.entities.User;
+import com.vn.ticketbookingapp.modules.signUp.SignUpView;
 import com.vn.ticketbookingapp.mvputils.BaseView;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
@@ -21,9 +21,12 @@ import javax.annotation.PostConstruct;
 @SpringComponent
 public class LoginView extends BaseView<LoginPresenter> {
 
-    private LoginForm loginForm;
+    @Autowired
+    private LoginPresenter loginPresenter;
 
-    private Div div ;
+    private LoginOverlay loginOverlay;
+
+    private Div div;
 
     private Div divForButton;
 
@@ -31,43 +34,47 @@ public class LoginView extends BaseView<LoginPresenter> {
 
     private Button signUpButton;
 
-    private SignUpForm signUpForm;
+    private Button loginButton;
+
+    private SignUpView signUpForm;
 
     private Binder<User> loginBinder;
 
+    private VerticalLayout formLayout;
 
     @Override
     @PostConstruct
     protected void init() {
-        getStyle().set("background-image","url('images/vande-bharat.webp')").
-                set("background-size","cover");
+        getStyle().set("background-image", "url('images/vande-bharat.webp')").
+                set("background-size", "cover");
         setSizeFull();
-        loginForm = new LoginForm();
+        loginOverlay = new LoginOverlay();
+
         div = new Div();
 
         divForButton = new Div();
-        signUpForm = new SignUpForm();
+        signUpForm = new SignUpView();
         signUpButton = new Button("Sign Up");
-//
-        signUpButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-        signUpButton.addClickListener(event -> signUpForm.open());
-
-        loginBinder = new Binder<>();
-//        username = new TextField("Username");
-//        password = new PasswordField("Password");
-//        login = new Button("Login");
-        loginForm.setForgotPasswordButtonVisible(true);
-
-        div.add(loginForm);
-        divForButton.add(signUpButton);
-        div.getStyle().set("margin","auto");
-
-        add(div);
-
-        loginForm.addLoginListener(event -> {
-
+        loginButton = new Button("Log In");
+        signUpButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+        signUpButton.addClickListener(click->{
+            signUpButton.getUI().ifPresent(ui -> ui.navigate("create-account"));
         });
 
+        loginButton.addClickListener(event->  loginOverlay.setOpened(true));
+        loginButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        loginBinder = new Binder<>();
 
+        div.add(loginOverlay);
+        div.getStyle().set("margin", "auto");
+        loginOverlay.setForgotPasswordButtonVisible(true);
+        signUpButton.getStyle().set("margin","auto");
+        loginButton.getStyle().set("margin","auto");
+        formLayout = new VerticalLayout(signUpButton,loginButton);
+
+
+        formLayout.getStyle().set("background-color", "white").set("margin","auto");
+        formLayout.setWidth("30%");
+        add(formLayout);
     }
 }
