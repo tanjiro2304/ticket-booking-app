@@ -1,12 +1,12 @@
 package com.vn.ticketbookingapp.entities;
 
-        import lombok.AllArgsConstructor;
-        import lombok.Getter;
-        import lombok.NoArgsConstructor;
-        import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-        import javax.persistence.*;
-        import java.time.LocalDate;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -18,10 +18,10 @@ public class Tickets {
     @Id
     private Long bookingId;
 
-    @Column(name="pnr")
+    @Column(name = "pnr")
     private Long pnr;
 
-    @Column(name="date_of_journey")
+    @Column(name = "date_of_journey")
     private LocalDate dateOfJourney;
 
     @ManyToOne
