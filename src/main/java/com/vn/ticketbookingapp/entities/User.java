@@ -18,6 +18,12 @@ public class User {
     @Id
     private String userId;
 
+    @Column(name="first_name")
+    private String firstName;
+
+    @Column(name="last_name")
+    private String lastName;
+
     @Column(name="id_type")
     private String idType;
 

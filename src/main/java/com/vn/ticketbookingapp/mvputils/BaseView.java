@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-public abstract class BaseView<P extends Presenter> extends VerticalLayout implements View<P>, BeforeEnterObserver, BeforeLeaveObserver {
+public abstract class BaseView<P extends Presenter> extends VerticalLayout implements View<P>,
+        BeforeEnterObserver, BeforeLeaveObserver {
 
     @Autowired
     P presenter;

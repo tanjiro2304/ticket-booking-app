@@ -1,4 +1,4 @@
-package com.vn.ticketbookingapp.modules.home;
+package com.vn.ticketbookingapp.modules.servicemenu;
 
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
@@ -6,5 +6,5 @@ import com.vn.ticketbookingapp.mvputils.BasePresenter;
 
 @UIScope
 @SpringComponent
-public class HomePresenter extends BasePresenter<HomeView> {
+public class ServiceMenuPresenter extends BasePresenter<ServiceMenuView> {
 }

@@ -1,0 +1,4 @@
+vaadin-login-overlay-wrapper [part="backdrop"] {
+                    background-image: url(images/tejas-rajdhani.jpg);
+                    background-size: cover;
+                    }

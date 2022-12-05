@@ -1,16 +1,17 @@
 package com.vn.ticketbookingapp.modules.login;
 
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginOverlay;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.entities.User;
-import com.vn.ticketbookingapp.modules.signUp.SignUpView;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +25,7 @@ public class LoginView extends BaseView<LoginPresenter> {
     @Autowired
     private LoginPresenter loginPresenter;
 
-    private LoginOverlay loginOverlay;
+    private LoginForm loginForm;
 
     private Div div;
 
@@ -32,11 +33,7 @@ public class LoginView extends BaseView<LoginPresenter> {
 
     private User user;
 
-    private Button signUpButton;
 
-    private Button loginButton;
-
-    private SignUpView signUpForm;
 
     private Binder<User> loginBinder;
 
@@ -45,36 +42,35 @@ public class LoginView extends BaseView<LoginPresenter> {
     @Override
     @PostConstruct
     protected void init() {
-        getStyle().set("background-image", "url('images/vande-bharat.webp')").
+
+
+        getStyle().set("background-image", "url('images/tejas-rajdhani.jpg')").
                 set("background-size", "cover");
+        loginForm = new LoginForm();
+
         setSizeFull();
-        loginOverlay = new LoginOverlay();
 
         div = new Div();
 
         divForButton = new Div();
-        signUpForm = new SignUpView();
-        signUpButton = new Button("Sign Up");
-        loginButton = new Button("Log In");
-        signUpButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
-        signUpButton.addClickListener(click->{
-            signUpButton.getUI().ifPresent(ui -> ui.navigate("create-account"));
-        });
 
-        loginButton.addClickListener(event->  loginOverlay.setOpened(true));
-        loginButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         loginBinder = new Binder<>();
 
-        div.add(loginOverlay);
+        div.add(loginForm);
         div.getStyle().set("margin", "auto");
-        loginOverlay.setForgotPasswordButtonVisible(true);
-        signUpButton.getStyle().set("margin","auto");
-        loginButton.getStyle().set("margin","auto");
-        formLayout = new VerticalLayout(signUpButton,loginButton);
+        loginForm.setForgotPasswordButtonVisible(true);
 
+        loginForm.addLoginListener(event -> {
+            if(loginPresenter.verifyUserNameAndPassword(event.getUsername(),event.getPassword())){
+                loginForm.getUI().ifPresent(e -> e.navigate("services"));
+                loginForm.setEnabled(true);
+            }else{
+                Notification.show("Invalid Username Or Password",3000, Notification.Position.TOP_END).
+                        addThemeVariants(NotificationVariant.LUMO_ERROR);
+                loginForm.setEnabled(true);
+            }
+        });
 
-        formLayout.getStyle().set("background-color", "white").set("margin","auto");
-        formLayout.setWidth("30%");
-        add(formLayout);
+        add(div);
     }
 }
