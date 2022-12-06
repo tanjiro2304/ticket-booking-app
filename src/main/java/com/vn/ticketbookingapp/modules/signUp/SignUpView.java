@@ -3,7 +3,6 @@ package com.vn.ticketbookingapp.modules.signUp;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H4;
@@ -17,8 +16,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
-import com.vn.ticketbookingapp.entities.User;
-import com.vn.ticketbookingapp.modules.login.LoginPresenter;
+import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -64,11 +62,11 @@ public class SignUpView extends BaseView<SignUpPresenter> {
 
     private EmailField emailId;
 
-    private Binder<User> userBinder;
+    private Binder<UserEntity> userBinder;
 
     private H4 title;
 
-    private User user;
+    private UserEntity userEntity;
 
     @Override
     @PostConstruct
@@ -92,11 +90,11 @@ public class SignUpView extends BaseView<SignUpPresenter> {
 
         userBinder.forField(firstName).withNullRepresentation("").
                 withValidator(event->event.length() > 3,"Invalid Name").
-                bind(User::getFirstName, User::setFirstName);
+                bind(UserEntity::getFirstName, UserEntity::setFirstName);
         userBinder.forField(lastName).
                 withValidator(event->event.length() > 3,"Invalid Name").
                 withNullRepresentation("").
-                bind(User::getLastName,User::setLastName);
+                bind(UserEntity::getLastName, UserEntity::setLastName);
         userBinder.forField(username).
                 withValidator(event->{
                     Pattern pattern = Pattern.compile("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
@@ -104,18 +102,18 @@ public class SignUpView extends BaseView<SignUpPresenter> {
                     return matcher.matches();
                 },"Invalid username").
                 withNullRepresentation("").
-                bind(User::getUserName,User::setUserName);
+                bind(UserEntity::getUserName, UserEntity::setUserName);
         userBinder.forField(password).
                 withValidator(event-> event.length() > 7,"Password is small").
                 withNullRepresentation("").
-                bind(User::getPassword,User::setPassword);
+                bind(UserEntity::getPassword, UserEntity::setPassword);
         userBinder.forField(confirmPassword).withNullRepresentation("").
                 withValidator(pass -> pass.equals(password.getValue()),"Password does not match...").
-                bind(User::getPassword,User::setPassword);
-        userBinder.forField(idType).withNullRepresentation("").bind(User::getIdType,User::setIdType);
-        userBinder.forField(userId).withNullRepresentation("").bind(User::getUserId,User::setUserId);
-        userBinder.forField(contactNo).withNullRepresentation("").bind(User::getContactNo,User::setContactNo);
-        userBinder.forField(emailId).withNullRepresentation("").bind(User::getEmailId, User::setEmailId);
+                bind(UserEntity::getPassword, UserEntity::setPassword);
+        userBinder.forField(idType).withNullRepresentation("").bind(UserEntity::getIdType, UserEntity::setIdType);
+        userBinder.forField(userId).withNullRepresentation("").bind(UserEntity::getUserId, UserEntity::setUserId);
+        userBinder.forField(contactNo).withNullRepresentation("").bind(UserEntity::getContactNo, UserEntity::setContactNo);
+        userBinder.forField(emailId).withNullRepresentation("").bind(UserEntity::getEmailId, UserEntity::setEmailId);
     }
 
     public void setUpForm(){
@@ -141,13 +139,13 @@ public class SignUpView extends BaseView<SignUpPresenter> {
                 userId, contactNo, emailId, buttonLayout);
         signUpButton.addClickListener(click ->{
             if(userBinder.isValid()){
-                user = new User();
+                userEntity = new UserEntity();
                 try {
-                    userBinder.writeBean(user);
+                    userBinder.writeBean(userEntity);
                 } catch (ValidationException e) {
                     throw new RuntimeException(e);
                 }
-                signUpPresenter.createAccount(user);
+                signUpPresenter.createAccount(userEntity);
                 Notification.show("Account Created Successfully",2000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 signUpButton.getUI().ifPresent(ui -> ui.navigate("login"));
@@ -177,8 +175,8 @@ public class SignUpView extends BaseView<SignUpPresenter> {
 
     }
 
-    public User getUser() {
-        return user;
+    public UserEntity getUser() {
+        return userEntity;
     }
 
 

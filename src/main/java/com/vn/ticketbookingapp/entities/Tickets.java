@@ -13,6 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name="tbl_tickets")
+
 public class Tickets {
 
     @Id
@@ -25,11 +27,9 @@ public class Tickets {
     private LocalDate dateOfJourney;
 
     @ManyToOne
-    private User user;
+    private UserEntity userEntity;
 
     @OneToOne(cascade = CascadeType.ALL)
-    //Column will be service_id
-
     private TransportService transportService;
 
 

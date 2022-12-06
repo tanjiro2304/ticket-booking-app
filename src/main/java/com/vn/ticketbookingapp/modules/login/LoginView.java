@@ -1,17 +1,13 @@
 package com.vn.ticketbookingapp.modules.login;
 
-import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.LoginForm;
-import com.vaadin.flow.component.login.LoginOverlay;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import com.vn.ticketbookingapp.entities.User;
+import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,11 +27,11 @@ public class LoginView extends BaseView<LoginPresenter> {
 
     private Div divForButton;
 
-    private User user;
+    private UserEntity userEntity;
 
 
 
-    private Binder<User> loginBinder;
+    private Binder<UserEntity> loginBinder;
 
     private VerticalLayout formLayout;
 
@@ -61,16 +57,13 @@ public class LoginView extends BaseView<LoginPresenter> {
         loginForm.setForgotPasswordButtonVisible(true);
 
         loginForm.addLoginListener(event -> {
-            if(loginPresenter.verifyUserNameAndPassword(event.getUsername(),event.getPassword())){
-                loginForm.getUI().ifPresent(e -> e.navigate("services"));
-                loginForm.setEnabled(true);
-            }else{
-                Notification.show("Invalid Username Or Password",3000, Notification.Position.TOP_END).
-                        addThemeVariants(NotificationVariant.LUMO_ERROR);
-                loginForm.setEnabled(true);
-            }
+           loginPresenter.loginListener(event.getUsername(),event.getPassword());
         });
 
         add(div);
+    }
+
+    public LoginForm getLoginForm() {
+        return loginForm;
     }
 }

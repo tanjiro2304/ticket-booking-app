@@ -13,8 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="users")
-public class User {
+@Table(name="tbl_user_entity")
+public class UserEntity {
     @Id
     private String userId;
 
@@ -39,6 +39,6 @@ public class User {
     @Column(name="email_id")
     private String emailId;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userEntity")
     List<Tickets> bookedTickets;
 }

@@ -7,16 +7,16 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import com.vn.ticketbookingapp.entities.User;
-import com.vn.ticketbookingapp.templates.MainTemplate;
+import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.mvputils.BaseView;
+import com.vn.ticketbookingapp.templates.SecondaryTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
 @SpringComponent
 @UIScope
-@Route(value = "services", layout = MainTemplate.class)
+@Route(value = "services", layout = SecondaryTemplate.class)
 public class ServiceMenuView extends BaseView<ServiceMenuPresenter> {
 
     @Autowired
@@ -24,17 +24,21 @@ public class ServiceMenuView extends BaseView<ServiceMenuPresenter> {
 
     private HorizontalLayout firstLayout;
 
+    private VerticalLayout searchLayout;
+
 
 
     @Override
     @PostConstruct
     protected void init() {
+
         H1 title = new H1("Online Reservation System(ORS)");
         title.getStyle().set("margin","auto").
                 set("padding-bottom","2%").set("padding-top","2%");
-        User user = (User) VaadinSession.getCurrent().getAttribute("user");
-        H4 greetUser= new H4("Welcome " + user.getFirstName() +
-                " " + user.getLastName());
+
+        UserEntity userEntity = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
+        H4 greetUser= new H4("Welcome " + userEntity.getFirstName() +
+                " " + userEntity.getLastName());
 
 
         greetUser.getStyle().set("margin","auto").set("padding","auto");
@@ -57,6 +61,9 @@ public class ServiceMenuView extends BaseView<ServiceMenuPresenter> {
         vandeBharat.setHeight("85%");
         vandeBharat.setWidth("45%");
         vandeBharat.setTitle("Vande Bharat Express");
+        vandeBharat.addClickListener(event -> {
+
+        });
         firstLayout.add(vandeBharat);
     }
 }
