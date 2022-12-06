@@ -20,13 +20,20 @@ public class SecondaryTemplate extends AppLayout {
 //        setSizeFull();
         DrawerToggle toggle = new DrawerToggle();
         title = new H4("Welcome To VRN Railways");
+        title.getStyle()
+                .set("font-size", "var(--lumo-font-size-l)")
+                .set("margin", "0");
         addToNavbar(toggle, title);
         setDrawerOpened(false);
+
         tabs = new Tabs();
+
         tabs.add(createTab(VaadinIcon.SEARCH,"Search"),
                 createTab(VaadinIcon.TRAIN,"Premium Services"),
                 createTab(VaadinIcon.RECORDS,"Book History")
                 );
+        tabs.setOrientation(Tabs.Orientation.VERTICAL);
+        addToDrawer(tabs);
     }
 
     private Tab createTab(VaadinIcon search, String search1) {
