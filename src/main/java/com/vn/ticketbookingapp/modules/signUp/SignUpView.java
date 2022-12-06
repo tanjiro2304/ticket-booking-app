@@ -10,6 +10,7 @@ import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -22,6 +23,8 @@ import com.vn.ticketbookingapp.mvputils.BaseView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Route("/create-account")
@@ -32,8 +35,8 @@ public class SignUpView extends BaseView<SignUpPresenter> {
 
     private FormLayout signUpForm;
 
-    private H4 title;
 
+    private VerticalLayout formLayout;
     private Div signUpDiv;
 
     private TextField userId;
@@ -63,6 +66,8 @@ public class SignUpView extends BaseView<SignUpPresenter> {
 
     private Binder<User> userBinder;
 
+    private H4 title;
+
     private User user;
 
     @Override
@@ -74,12 +79,52 @@ public class SignUpView extends BaseView<SignUpPresenter> {
                 set("height","100%").
                 set("background-size","cover")  ;
         setSizeFull();
-        userId = new TextField("ID Card No");
+        setUpForm();
+        setUserBinder();
+        setUpDiv();
 
+
+        add(formLayout);
+    }
+
+    public void setUserBinder(){
+        userBinder = new Binder<>();
+
+        userBinder.forField(firstName).withNullRepresentation("").
+                withValidator(event->event.length() > 3,"Invalid Name").
+                bind(User::getFirstName, User::setFirstName);
+        userBinder.forField(lastName).
+                withValidator(event->event.length() > 3,"Invalid Name").
+                withNullRepresentation("").
+                bind(User::getLastName,User::setLastName);
+        userBinder.forField(username).
+                withValidator(event->{
+                    Pattern pattern = Pattern.compile("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
+                    Matcher matcher = pattern.matcher(event);
+                    return matcher.matches();
+                },"Invalid username").
+                withNullRepresentation("").
+                bind(User::getUserName,User::setUserName);
+        userBinder.forField(password).
+                withValidator(event-> event.length() > 7,"Password is small").
+                withNullRepresentation("").
+                bind(User::getPassword,User::setPassword);
+        userBinder.forField(confirmPassword).withNullRepresentation("").
+                withValidator(pass -> pass.equals(password.getValue()),"Password does not match...").
+                bind(User::getPassword,User::setPassword);
+        userBinder.forField(idType).withNullRepresentation("").bind(User::getIdType,User::setIdType);
+        userBinder.forField(userId).withNullRepresentation("").bind(User::getUserId,User::setUserId);
+        userBinder.forField(contactNo).withNullRepresentation("").bind(User::getContactNo,User::setContactNo);
+        userBinder.forField(emailId).withNullRepresentation("").bind(User::getEmailId, User::setEmailId);
+    }
+
+    public void setUpForm(){
+        userId = new TextField("ID Card No");
+        formLayout = new VerticalLayout();
         idType = new ComboBox<>("Id Card");
         idType.setItems("Aadhar", "PAN", "Voter Id","Driving License");
 
-        H4 title = new H4("Create A New Account");
+        title = new H4("Create A New Account");
         username = new TextField("Username");
         password = new PasswordField("Password");
         confirmPassword = new PasswordField("Confirm Password");
@@ -89,55 +134,47 @@ public class SignUpView extends BaseView<SignUpPresenter> {
         signUpButton = new Button("Sign Up");
         cancelButton = new Button("Cancel");
         emailId = new EmailField("Email Id");
-        signUpButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        signUpButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS, ButtonVariant.LUMO_PRIMARY);
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR,ButtonVariant.LUMO_PRIMARY);
         buttonLayout = new HorizontalLayout(signUpButton, cancelButton);
         signUpForm = new FormLayout(title,firstName, lastName, username, password, confirmPassword, idType,
                 userId, contactNo, emailId, buttonLayout);
-        setUserBinder();
         signUpButton.addClickListener(click ->{
-            user = new User();
-            try {
-                userBinder.writeBean(user);
-            } catch (ValidationException e) {
-                throw new RuntimeException(e);
+            if(userBinder.isValid()){
+                user = new User();
+                try {
+                    userBinder.writeBean(user);
+                } catch (ValidationException e) {
+                    throw new RuntimeException(e);
+                }
+                signUpPresenter.createAccount(user);
+                Notification.show("Account Created Successfully",2000, Notification.Position.TOP_END).
+                        addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                signUpButton.getUI().ifPresent(ui -> ui.navigate("login"));
+            }else{
+                Notification.show("Please Fill The Form With Valid Details",2000,
+                        Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
-            signUpPresenter.createAccount(user);
-            Notification.show("Account Created Successfully",2000, Notification.Position.TOP_END).
-                    addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            signUpButton.getUI().ifPresent(ui -> ui.navigate("login"));
+
 
         });
+    }
 
+    public void setUpDiv(){
         signUpForm.setColspan(title,2);
         signUpForm.setColspan(username,2);
         signUpForm.setColspan(buttonLayout,2);
         signUpForm.setWidth("55%");
         signUpForm.getStyle().set("margin","auto");
+        signUpForm.getStyle().set("padding","0%");
 
 
-        signUpDiv = new Div();
-        signUpDiv.getStyle().set("background-color","white").
-        set("margin","auto").set("margin-top","5%").set("margin-bottom","5%");
-        signUpDiv.add(signUpForm);
-        signUpDiv.setWidth("35%");
-        signUpDiv.setHeight("150%");
-        add(signUpDiv);
-    }
+        formLayout.getStyle().set("background-color","white");
 
-    public void setUserBinder(){
-        userBinder = new Binder<>();
 
-        userBinder.forField(firstName).withNullRepresentation("").bind(User::getFirstName, User::setFirstName);
-        userBinder.forField(lastName).withNullRepresentation("").bind(User::getLastName,User::setLastName);
-        userBinder.forField(username).withNullRepresentation("").bind(User::getUserName,User::setUserName);
-        userBinder.forField(password).withNullRepresentation("").bind(User::getPassword,User::setPassword);
-        userBinder.forField(confirmPassword).withNullRepresentation("").
-                withValidator(pass -> pass.equals(password.getValue()),"Password does not match...");
-        userBinder.forField(idType).withNullRepresentation("").bind(User::getIdType,User::setIdType);
-        userBinder.forField(userId).withNullRepresentation("").bind(User::getUserId,User::setUserId);
-        userBinder.forField(contactNo).withNullRepresentation("").bind(User::getContactNo,User::setContactNo);
-        userBinder.forField(emailId).withNullRepresentation("").bind(User::getEmailId, User::setEmailId);
+        formLayout.add(signUpForm);
+
+
     }
 
     public User getUser() {

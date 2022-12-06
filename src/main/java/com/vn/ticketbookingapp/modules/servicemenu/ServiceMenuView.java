@@ -53,9 +53,10 @@ public class ServiceMenuView extends BaseView<ServiceMenuPresenter> {
     private void setHorizontalLayout(){
         firstLayout = new HorizontalLayout();
 
-        Image firstImage = new Image("images/Vande_Bharat_Train_2.webp","No Image Found");
-        firstImage.setHeight("45%");
-        firstImage.setWidth("45%");
-        firstImage.setTitle("Vande Bharat Express");
+        Image vandeBharat = new Image("images/Vande_Bharat_Train_2.webp","No Image Found");
+        vandeBharat.setHeight("85%");
+        vandeBharat.setWidth("45%");
+        vandeBharat.setTitle("Vande Bharat Express");
+        firstLayout.add(vandeBharat);
     }
 }
