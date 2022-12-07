@@ -25,9 +25,9 @@ public abstract class BaseView<P extends Presenter> extends VerticalLayout imple
     private void postConstruct(){
         if(presenter != null){
             presenter.setView(this);
+            init();
             presenter.beforeViewInit();
             presenter.afterViewInit();
-
         }
     }
 

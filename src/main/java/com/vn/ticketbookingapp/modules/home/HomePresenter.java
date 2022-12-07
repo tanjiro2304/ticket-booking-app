@@ -9,18 +9,5 @@ import org.springframework.context.annotation.Lazy;
 @UIScope
 @SpringComponent
 public class HomePresenter extends BasePresenter<HomeView> {
-    @Lazy
-    @Autowired
-    private HomeView homeView;
-    public void signUpListener(){
-        homeView.getSignUpButton().getUI().ifPresent(ui-> {
-            ui.navigate("create-account");
-        });
-    }
 
-    public void logInListener(){
-        homeView.getLoginButton().getUI().ifPresent(ui->{
-            ui.navigate("login");
-        });
-    }
 }

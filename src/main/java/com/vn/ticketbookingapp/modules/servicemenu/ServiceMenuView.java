@@ -29,7 +29,6 @@ public class ServiceMenuView extends BaseView<ServiceMenuPresenter> {
 
 
     @Override
-    @PostConstruct
     protected void init() {
 
         H1 title = new H1("Online Reservation System(ORS)");

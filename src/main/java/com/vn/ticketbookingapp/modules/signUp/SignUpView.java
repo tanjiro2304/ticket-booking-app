@@ -18,7 +18,6 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.Route;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.mvputils.BaseView;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.util.regex.Matcher;
@@ -28,13 +27,12 @@ import java.util.regex.Pattern;
 @Route("/create-account")
 public class SignUpView extends BaseView<SignUpPresenter> {
 
-    @Autowired
-    private SignUpPresenter signUpPresenter;
 
     private FormLayout signUpForm;
 
 
     private VerticalLayout formLayout;
+
     private Div signUpDiv;
 
     private TextField userId;
@@ -69,7 +67,7 @@ public class SignUpView extends BaseView<SignUpPresenter> {
     private UserEntity userEntity;
 
     @Override
-    @PostConstruct
+
     protected void init() {
         getStyle().set("background-image", "url('images/vande-bharat.webp')").
                 set("background-repeat","no-repeat").
@@ -145,7 +143,7 @@ public class SignUpView extends BaseView<SignUpPresenter> {
                 } catch (ValidationException e) {
                     throw new RuntimeException(e);
                 }
-                signUpPresenter.createAccount(userEntity);
+                getPresenter().createAccount(userEntity);
                 Notification.show("Account Created Successfully",2000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 signUpButton.getUI().ifPresent(ui -> ui.navigate("login"));
@@ -174,10 +172,4 @@ public class SignUpView extends BaseView<SignUpPresenter> {
 
 
     }
-
-    public UserEntity getUser() {
-        return userEntity;
-    }
-
-
 }

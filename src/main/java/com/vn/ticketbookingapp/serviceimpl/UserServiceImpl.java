@@ -1,4 +1,4 @@
-package com.vn.ticketbookingapp.service;
+package com.vn.ticketbookingapp.serviceimpl;
 
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -7,14 +7,15 @@ import com.vn.ticketbookingapp.converter.UserConverter;
 import com.vn.ticketbookingapp.dto.User;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.repository.UserRepository;
+import com.vn.ticketbookingapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@UIScope
-@SpringComponent
-public class UserServiceImpl implements UserService{
+@Service
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepositoryImpl;

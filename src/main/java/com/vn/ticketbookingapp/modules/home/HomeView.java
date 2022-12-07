@@ -19,24 +19,26 @@ import javax.annotation.PostConstruct;
 @Route(value = "",layout = MainTemplate.class)
 public class HomeView extends BaseView<HomePresenter>  {
 
-    @Autowired
-    private HomePresenter homePresenter;
+
     private Div buttonLayout;
 
     private Button loginButton;
     private Button signUpButton;
 
     @Override
-    @PostConstruct
     protected void init() {
         loginButton = new Button("Login");
         loginButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        loginButton.addClickListener(event -> homePresenter.logInListener());
+        loginButton.addClickListener(event -> loginButton.getUI().ifPresent(ui-> {
+            ui.navigate("login");
+        }));
 
         signUpButton = new Button("Sign Up");
         signUpButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
-        signUpButton.addClickListener(event -> homePresenter.signUpListener());
+        signUpButton.addClickListener(event -> signUpButton.getUI().ifPresent(ui-> {
+            ui.navigate("create-account");
+        }));
         buttonLayout =  new Div(loginButton, signUpButton);
         buttonLayout.getStyle().set("margin","auto");
         add(buttonLayout);

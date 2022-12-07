@@ -1,4 +1,4 @@
-package com.vn.ticketbookingapp.searchmenu;
+package com.vn.ticketbookingapp.modules.searchmenu;
 
 import com.vn.ticketbookingapp.mvputils.BasePresenter;
 

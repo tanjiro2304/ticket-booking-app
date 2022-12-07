@@ -9,6 +9,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.mvputils.BaseView;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -16,27 +17,15 @@ import javax.annotation.PostConstruct;
 @Route("/login")
 @UIScope
 @SpringComponent
+@Getter
 public class LoginView extends BaseView<LoginPresenter> {
-
-    @Autowired
-    private LoginPresenter loginPresenter;
-
     private LoginForm loginForm;
-
     private Div div;
-
     private Div divForButton;
-
-    private UserEntity userEntity;
-
-
 
     private Binder<UserEntity> loginBinder;
 
-    private VerticalLayout formLayout;
-
     @Override
-    @PostConstruct
     protected void init() {
 
 
@@ -57,13 +46,12 @@ public class LoginView extends BaseView<LoginPresenter> {
         loginForm.setForgotPasswordButtonVisible(true);
 
         loginForm.addLoginListener(event -> {
-           loginPresenter.loginListener(event.getUsername(),event.getPassword());
+           getPresenter().loginListener(event.getUsername(),event.getPassword(),loginForm);
+           loginForm.setEnabled(true);
         });
 
         add(div);
     }
 
-    public LoginForm getLoginForm() {
-        return loginForm;
-    }
+
 }
