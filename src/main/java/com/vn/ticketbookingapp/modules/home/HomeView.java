@@ -32,11 +32,11 @@ public class HomeView extends BaseView<HomePresenter>  {
         loginButton = new Button("Login");
         loginButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        loginButton.addClickListener(event -> homePresenter.signUpListener());
+        loginButton.addClickListener(event -> homePresenter.logInListener());
 
         signUpButton = new Button("Sign Up");
         signUpButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
-        signUpButton.addClickListener(event -> homePresenter.logInListener());
+        signUpButton.addClickListener(event -> homePresenter.signUpListener());
         buttonLayout =  new Div(loginButton, signUpButton);
         buttonLayout.getStyle().set("margin","auto");
         add(buttonLayout);

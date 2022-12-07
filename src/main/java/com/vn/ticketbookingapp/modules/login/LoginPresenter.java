@@ -1,14 +1,12 @@
 package com.vn.ticketbookingapp.modules.login;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.mvputils.BasePresenter;
 import com.vn.ticketbookingapp.service.UserService;
-import com.vn.ticketbookingapp.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
