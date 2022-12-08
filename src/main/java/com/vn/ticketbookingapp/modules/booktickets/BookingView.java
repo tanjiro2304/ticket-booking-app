@@ -42,9 +42,6 @@ public class BookingView extends BaseView<BookingPresenter> {
 
     public void init(){
         layout = new VerticalLayout();
-
-
-
         bookTicketLayout = new FormLayout();
         bookTicketLayout.setHeight("45%");
         serviceType = new ComboBox<>("Service Type");
@@ -56,26 +53,28 @@ public class BookingView extends BaseView<BookingPresenter> {
         destination = new ComboBox<>("Destination");
         destination.setItems(bookingService.stations());
         destination.setClearButtonVisible(true);
-
+        searchButton = new Button("Search");
+        searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ICON);
 
         dateOfJourney = new DatePicker("Date Of Journey");
         bookTicketLayout.setColspan(searchButton,2);
         bookTicketLayout.add(source,destination,serviceType, dateOfJourney, searchButton);
-        searchButton = new Button("Search");
-        searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ICON);
+        layout.add(bookTicketLayout);
+        add(layout);
         searchButton.addClickListener(event -> {
             if(bookingService.trainFound(source.getValue(),destination.getValue())){
                 Notification.show("Train Found",3000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 trainGrid = new TrainGrid(getPresenter().getTrains());
-                layout.add(bookTicketLayout,trainGrid);
+                layout.add(trainGrid);
 
                 add(layout);
 
             }else{
                 Notification.show("No service between the given two stations",3000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_ERROR);
-                layout.add(bookTicketLayout,trainGrid);
+                trainGrid.removeAll();
+                layout.add(bookTicketLayout);
                 add(layout);
             }
         });

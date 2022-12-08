@@ -25,6 +25,7 @@ public class HomeView extends BaseView<HomePresenter>  {
     private Button loginButton;
     private Button signUpButton;
 
+
     @Override
     protected void init() {
         loginButton = new Button("Login");

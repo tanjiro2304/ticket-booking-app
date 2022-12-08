@@ -38,5 +38,6 @@ public class TransportService {
     @Column(name="destination")
     private String destination;
 
-
+    @Column(name="travel_time")
+    private LocalTime travelTime;
 }

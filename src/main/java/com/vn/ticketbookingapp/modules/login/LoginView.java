@@ -48,14 +48,14 @@ public class LoginView extends BaseView<LoginPresenter> {
         loginForm.setForgotPasswordButtonVisible(true);
 
         loginForm.addLoginListener(event -> {
-           loginListener(event.getUsername(),event.getPassword(),loginForm);
+           loginListener(event.getUsername(),event.getPassword());
            loginForm.setEnabled(true);
         });
 
         add(div);
     }
 
-    public void loginListener(String username, String password, LoginForm loginForm) {
+    public void loginListener(String username, String password) {
         if (getPresenter().verifyUserNameAndPassword(username, password)) {
             loginForm.getUI().ifPresent(e -> e.navigate("services"));
 
