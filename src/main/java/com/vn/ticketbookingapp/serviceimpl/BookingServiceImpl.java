@@ -5,6 +5,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.repository.TrainServiceRepository;
 import com.vn.ticketbookingapp.service.BookingService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Getter
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
     TrainServiceRepository trainServiceRepository;
+
+    private List<TransportService> transportServiceList;
+
+    public List<TransportService> getTransportServiceList() {
+        return transportServiceList;
+    }
 
     @Override
     public HashSet<String> serviceTypes() {
@@ -28,6 +36,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     public HashSet<String> stations() {
+
+
+
         return new HashSet<>(trainServiceRepository.findAll().
                 stream().
                 map(TransportService::getSource).
@@ -42,11 +53,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Boolean trainFound(String source, String destination) {
-        if( trainServiceRepository.findBySourceAndDestination(source, destination) != null){
-            return true;
+        transportServiceList =trainServiceRepository.findBySourceAndDestination(source, destination);
+        if( transportServiceList.isEmpty()){
+            return false;
         }
-        return false;
+        return true;
     }
+
+
 
 
 }

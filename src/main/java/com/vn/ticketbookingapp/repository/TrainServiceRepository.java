@@ -9,5 +9,5 @@ import java.util.List;
 public interface TrainServiceRepository extends JpaRepository<TransportService, String> {
 
 
-    TransportService findBySourceAndDestination(String source, String destination);
+    List<TransportService> findBySourceAndDestination(String source, String destination);
 }

@@ -21,16 +21,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         return userServiceImpl.ifUserExists(username, password);
     }
 
-    public void loginListener(String username, String password, LoginForm loginForm) {
-        if (verifyUserNameAndPassword(username, password)) {
-            loginForm.getUI().ifPresent(e -> e.navigate("services"));
 
-        } else {
-            Notification.show("Invalid Username Or Password", 3000, Notification.Position.TOP_END).
-                    addThemeVariants(NotificationVariant.LUMO_ERROR);
-
-        }
-    }
 
 
 }

@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 @Repository
 public abstract class TrainServiceRepositoryImpl implements TrainServiceRepository {
     @Override
-    public TransportService findBySourceAndDestination(String source, String destination) {
+    public List<TransportService> findBySourceAndDestination(String source, String destination) {
         return findAll().stream().filter(transportService ->
-                transportService.getSource().equals(source) && transportService.getDestination().equals(destination)).
-                findFirst().get();
+                transportService.getSource().equals(source) &&
+                        transportService.getDestination().equals(destination)).collect(Collectors.toList());
     }
 }
 
