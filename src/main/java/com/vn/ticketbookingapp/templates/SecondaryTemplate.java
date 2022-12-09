@@ -14,6 +14,7 @@ import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import com.vn.ticketbookingapp.modules.bookinghistory.HistoryView;
 import com.vn.ticketbookingapp.modules.booktickets.BookingView;
 import com.vn.ticketbookingapp.modules.login.LoginView;
 import com.vn.ticketbookingapp.modules.servicemenu.ServiceMenuView;
@@ -50,7 +51,8 @@ public class SecondaryTemplate extends AppLayout {
                 createTab(VaadinIcon.HOME,"Home", ServiceMenuView.class),
                 createTab(VaadinIcon.TABLE,"Time Table", TimeTableView.class),
                 createTab(VaadinIcon.TICKET,"Book Tickets", BookingView.class),
-                createTab(VaadinIcon.SIGN_OUT,"Log Out", LoginView.class)
+                createTab(VaadinIcon.SIGN_OUT,"Log Out", LoginView.class),
+                createTab(VaadinIcon.ARCHIVES, "History", HistoryView.class)
                 );
 
         tabs.setOrientation(Tabs.Orientation.VERTICAL);

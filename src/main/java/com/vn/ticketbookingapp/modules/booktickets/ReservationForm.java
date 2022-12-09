@@ -12,17 +12,25 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.entities.Tickets;
 import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.service.TicketService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
+@UIScope
+@SpringComponent
+@Getter
 public class ReservationForm extends Dialog {
+
 
     @Autowired
     TicketService ticketService;
@@ -49,7 +57,10 @@ public class ReservationForm extends Dialog {
 
     private Tickets ticket;
 
-    public void init(TransportService transportService) {
+
+
+    @PostConstruct
+    public void init() {
         ticket = new Tickets();
         formLayout = new FormLayout();
         passengerFirstName = new TextField("First Name");
@@ -71,6 +82,7 @@ public class ReservationForm extends Dialog {
                 bookingBinder.writeBean(ticket);
                 ticket.setPnr(generatePnrNo());
                 ticket.setBookingId(generateBookingId());
+                TransportService transportService =(TransportService) VaadinSession.getCurrent().getAttribute("selectedTrain");
                 ticket.setTransportService(transportService);
                 UserEntity user = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
                 ticket.setUserEntity(user);

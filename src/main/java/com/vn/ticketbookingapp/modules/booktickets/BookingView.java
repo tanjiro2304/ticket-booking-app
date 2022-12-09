@@ -10,6 +10,7 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import com.vn.ticketbookingapp.service.BookingService;
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@Route(value="booking-ticket", layout = SecondaryTemplate.class)
+@Route(value = "booking-ticket", layout = SecondaryTemplate.class)
 public class BookingView extends BaseView<BookingPresenter> {
 
     private FormLayout bookTicketLayout;
@@ -35,17 +36,22 @@ public class BookingView extends BaseView<BookingPresenter> {
 
     private Button searchButton;
 
+    @Autowired
+    private ReservationForm reservationForm;
+
+    @Autowired
     private TrainGrid trainGrid;
     @Autowired
     BookingService bookingService;
 
 
-    public void init(){
+    public void init() {
         layout = new VerticalLayout();
         bookTicketLayout = new FormLayout();
         bookTicketLayout.setHeight("45%");
         serviceType = new ComboBox<>("Service Type");
         serviceType.setItems(bookingService.listOfServices());
+
 
         source = new ComboBox<>("Source");
         source.setItems(bookingService.stations());
@@ -54,32 +60,60 @@ public class BookingView extends BaseView<BookingPresenter> {
         destination.setItems(bookingService.stations());
         destination.setClearButtonVisible(true);
         searchButton = new Button("Search");
-        searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ICON);
+        searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ICON);
 
         dateOfJourney = new DatePicker("Date Of Journey");
-        bookTicketLayout.setColspan(searchButton,2);
-        bookTicketLayout.add(source,destination,serviceType, dateOfJourney, searchButton);
+        bookTicketLayout.setColspan(searchButton, 2);
+        bookTicketLayout.add(source, destination, serviceType, dateOfJourney, searchButton);
         layout.add(bookTicketLayout);
         add(layout);
         searchButton.addClickListener(event -> {
-            if(bookingService.trainFound(source.getValue(),destination.getValue())){
-                Notification.show("Train Found",3000, Notification.Position.TOP_END).
+            if (bookingService.trainFound(source.getValue(), destination.getValue())) {
+                Notification.show("Train Found", 3000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                trainGrid = new TrainGrid(getPresenter().getTrains());
+                trainGrid.setItems(getPresenter().getTrains());
+                setTrainGrid();
                 layout.add(trainGrid);
 
                 add(layout);
 
-            }else{
-                Notification.show("No service between the given two stations",3000, Notification.Position.TOP_END).
+            } else {
+                Notification.show("No service between the given two stations", 3000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_ERROR);
-                trainGrid.removeAll();
+
                 layout.add(bookTicketLayout);
                 add(layout);
             }
         });
+    }
 
+    public void setTrainGrid() {
+        trainGrid.addComponentColumn(book -> {
+            Button bookButton = new Button("Book Tickets");
+            bookButton.addClickListener(event -> {
+                if (trainGrid.getSelectedItems().isEmpty()) {
+                    Notification.show("Please select a train to book ticket.",
+                            2000,
+                            Notification.Position.TOP_END).addThemeVariants(NotificationVariant.LUMO_ERROR);
+                } else {
+                        VaadinSession.getCurrent().setAttribute("selectedTrain",trainGrid.getSelectedItems().
+                                stream().
+                                findFirst().
+                                get());
+                        reservationForm.open();
+                }
 
+            });
+            return bookButton;
+        });
+
+//            if(!(bookingPresenter.getTrains().isEmpty())){
+//                transportServiceGrid.setItems(bookingPresenter.getTrains());
+//                add(instruction,transportServiceGrid);
+//            }
 
     }
+
+
 }
+
