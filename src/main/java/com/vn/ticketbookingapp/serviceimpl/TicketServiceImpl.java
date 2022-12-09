@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
-    TicketRepo ticketRepo;
+    TicketRepo ticketRepoImpl;
 
     @Override
     public void addTicket(Tickets ticket){
-        ticketRepo.save(ticket);
+        ticketRepoImpl.save(ticket);
     }
 }

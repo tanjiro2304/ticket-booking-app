@@ -38,7 +38,8 @@ public class TrainGrid extends VerticalLayout {
                             Notification.Position.TOP_END).addThemeVariants(NotificationVariant.LUMO_ERROR);
                 }
                 else{
-                    reservationForm = new ReservationForm(transportServiceGrid.getSelectedItems().
+                    reservationForm = new ReservationForm();
+                    reservationForm.init(transportServiceGrid.getSelectedItems().
                             stream().
                             findFirst().
                             get());

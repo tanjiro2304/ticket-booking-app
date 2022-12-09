@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashSet;
 import java.util.List;
 
-@SpringComponent
-@UIScope
+
 public interface BookingService {
 
     public HashSet<String> serviceTypes();

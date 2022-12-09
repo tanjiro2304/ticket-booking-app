@@ -49,7 +49,7 @@ public class ReservationForm extends Dialog {
 
     private Tickets ticket;
 
-    public ReservationForm(TransportService transportService) {
+    public void init(TransportService transportService) {
         ticket = new Tickets();
         formLayout = new FormLayout();
         passengerFirstName = new TextField("First Name");
