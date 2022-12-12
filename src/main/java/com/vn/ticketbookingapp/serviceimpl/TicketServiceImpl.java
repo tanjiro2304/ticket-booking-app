@@ -1,6 +1,7 @@
 package com.vn.ticketbookingapp.serviceimpl;
 
 import com.vaadin.flow.server.VaadinSession;
+import com.vn.ticketbookingapp.entities.Passenger;
 import com.vn.ticketbookingapp.entities.Tickets;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.repository.TicketRepo;
@@ -25,5 +26,10 @@ public class TicketServiceImpl implements TicketService {
     public List<Tickets> getTicketOfCurrentUser() {
         UserEntity user = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
         return ticketRepoImpl.findTicketByUserEntity(user);
+    }
+
+    @Override
+    public List<Passenger> getPassengerListFromTicket(Tickets ticket) {
+        return null;
     }
 }

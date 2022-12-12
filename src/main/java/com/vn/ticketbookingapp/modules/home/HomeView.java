@@ -2,10 +2,12 @@ package com.vn.ticketbookingapp.modules.home;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import com.vn.ticketbookingapp.entities.Passenger;
 import com.vn.ticketbookingapp.templates.MainTemplate;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import lombok.Getter;
@@ -28,6 +30,8 @@ public class HomeView extends BaseView<HomePresenter>  {
 
     @Override
     protected void init() {
+
+        Grid<Passenger> passengerGrid = new Grid<>();
         loginButton = new Button("Login");
         loginButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 

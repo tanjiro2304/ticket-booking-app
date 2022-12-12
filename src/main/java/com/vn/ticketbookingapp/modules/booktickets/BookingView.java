@@ -36,8 +36,8 @@ public class BookingView extends BaseView<BookingPresenter> {
 
     private Button searchButton;
 
-    @Autowired
-    private ReservationForm reservationForm;
+//    @Autowired
+//    private ReservationForm reservationForm;
 
     @Autowired
     private TrainGrid trainGrid;
@@ -66,13 +66,14 @@ public class BookingView extends BaseView<BookingPresenter> {
         bookTicketLayout.setColspan(searchButton, 2);
         bookTicketLayout.add(source, destination, serviceType, dateOfJourney, searchButton);
         layout.add(bookTicketLayout);
+
         add(layout);
         searchButton.addClickListener(event -> {
             if (bookingService.trainFound(source.getValue(), destination.getValue())) {
                 Notification.show("Train Found", 3000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 trainGrid.setItems(getPresenter().getTrains());
-                setTrainGrid();
+
                 layout.add(trainGrid);
 
                 add(layout);
@@ -87,32 +88,32 @@ public class BookingView extends BaseView<BookingPresenter> {
         });
     }
 
-    public void setTrainGrid() {
-        trainGrid.addComponentColumn(book -> {
-            Button bookButton = new Button("Book Tickets");
-            bookButton.addClickListener(event -> {
-                if (trainGrid.getSelectedItems().isEmpty()) {
-                    Notification.show("Please select a train to book ticket.",
-                            2000,
-                            Notification.Position.TOP_END).addThemeVariants(NotificationVariant.LUMO_ERROR);
-                } else {
-                        VaadinSession.getCurrent().setAttribute("selectedTrain",trainGrid.getSelectedItems().
-                                stream().
-                                findFirst().
-                                get());
-                        reservationForm.open();
-                }
-
-            });
-            return bookButton;
-        });
+//    public void setTrainGrid() {
+//        trainGrid.addComponentColumn(book -> {
+//            Button bookButton = new Button("Book Tickets");
+//            bookButton.addClickListener(event -> {
+//                if (trainGrid.getSelectedItems().isEmpty()) {
+//                    Notification.show("Please select a train to book ticket.",
+//                            2000,
+//                            Notification.Position.TOP_END).addThemeVariants(NotificationVariant.LUMO_ERROR);
+//                } else {
+//                        VaadinSession.getCurrent().setAttribute("selectedTrain",trainGrid.getSelectedItems().
+//                                stream().
+//                                findFirst().
+//                                get());
+//                        reservationForm.open();
+//                }
+//
+//            });
+//            return bookButton;
+//        });
 
 //            if(!(bookingPresenter.getTrains().isEmpty())){
 //                transportServiceGrid.setItems(bookingPresenter.getTrains());
 //                add(instruction,transportServiceGrid);
 //            }
 
-    }
+//    }
 
 
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
@@ -20,18 +21,6 @@ public class Tickets {
     @Id
     private Long bookingId;
 
-    @Column(name="passenger_first_name")
-    private String passengerFirstName;
-
-    @Column(name="passenger_last_name")
-    private String passengerLastName;
-
-    @Column(name="address")
-    private String address;
-
-    @Column
-    private Integer age;
-
     @Column(name = "contact_no")
     private String contactNo;
 
@@ -40,6 +29,10 @@ public class Tickets {
 
     @Column(name = "date_of_journey")
     private LocalDate dateOfJourney;
+
+    @Column
+    @OneToMany(mappedBy = "ticket")
+    List<Passenger> passengerList;
 
     @ManyToOne
     private UserEntity userEntity;
