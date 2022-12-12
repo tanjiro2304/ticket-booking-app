@@ -85,15 +85,15 @@ public class HistoryView extends BaseView<HistoryPresenter> {
 
         departureTime = new Span("Departure Time : " + ticket.getTransportService().getDeparture());
 
-//        passengerGrid = new Grid<>();
-//        passengerGrid.addColumn(Passenger::getPassengerFirstName).setHeader("First Name");
-//        passengerGrid.addColumn(Passenger::getPassengerLastName).setHeader("Last Name");
-//        passengerGrid.addColumn(Passenger::getAge).setHeader("Age");
-//        passengerGrid.addColumn(Passenger::getGender).setHeader("Gender");
-//        passengerGrid.addColumn(Passenger::getPassengerId).setHeader("Passenger Id");
-//        passengerGrid.setItems(ticket.getPassengerList());
+        passengerGrid = new Grid<>();
+        passengerGrid.addColumn(Passenger::getPassengerFirstName).setHeader("First Name");
+        passengerGrid.addColumn(Passenger::getPassengerLastName).setHeader("Last Name");
+        passengerGrid.addColumn(Passenger::getAge).setHeader("Age");
+        passengerGrid.addColumn(Passenger::getGender).setHeader("Gender");
+        passengerGrid.addColumn(Passenger::getPassengerId).setHeader("Passenger Id");
+        passengerGrid.setItems(ticket.getPassengerList());
 
         VerticalLayout verticalLayout = new VerticalLayout(pnr, bookingId, title,source,destination,trainNo,arrivalTime,departureTime);
-        ticketInfoDialog.add(title,verticalLayout);
+        ticketInfoDialog.add(title,verticalLayout,passengerGrid);
     }
 }

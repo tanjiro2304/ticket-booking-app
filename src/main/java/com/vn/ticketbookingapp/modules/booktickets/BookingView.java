@@ -36,9 +36,6 @@ public class BookingView extends BaseView<BookingPresenter> {
 
     private Button searchButton;
 
-//    @Autowired
-//    private ReservationForm reservationForm;
-
     @Autowired
     private TrainGrid trainGrid;
     @Autowired
@@ -88,32 +85,6 @@ public class BookingView extends BaseView<BookingPresenter> {
         });
     }
 
-//    public void setTrainGrid() {
-//        trainGrid.addComponentColumn(book -> {
-//            Button bookButton = new Button("Book Tickets");
-//            bookButton.addClickListener(event -> {
-//                if (trainGrid.getSelectedItems().isEmpty()) {
-//                    Notification.show("Please select a train to book ticket.",
-//                            2000,
-//                            Notification.Position.TOP_END).addThemeVariants(NotificationVariant.LUMO_ERROR);
-//                } else {
-//                        VaadinSession.getCurrent().setAttribute("selectedTrain",trainGrid.getSelectedItems().
-//                                stream().
-//                                findFirst().
-//                                get());
-//                        reservationForm.open();
-//                }
-//
-//            });
-//            return bookButton;
-//        });
-
-//            if(!(bookingPresenter.getTrains().isEmpty())){
-//                transportServiceGrid.setItems(bookingPresenter.getTrains());
-//                add(instruction,transportServiceGrid);
-//            }
-
-//    }
 
 
 }

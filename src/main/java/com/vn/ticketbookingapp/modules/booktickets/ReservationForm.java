@@ -41,9 +41,14 @@ import java.util.concurrent.ThreadLocalRandom;
 @Getter
 public class ReservationForm extends Dialog {
 
+    @Autowired
+    BookingPresenter bookingPresenter;
+
 
     @Autowired
     TicketService ticketService;
+
+    TransportService transportService;
 
     private FormLayout formLayout;
 
@@ -85,6 +90,13 @@ public class ReservationForm extends Dialog {
 
     private Button saveButton;
 
+    public TransportService getTransportService() {
+        return transportService;
+    }
+
+    public void setTransportService(TransportService transportService) {
+        this.transportService = transportService;
+    }
 
     @PostConstruct
     public void init() {
@@ -126,17 +138,16 @@ public class ReservationForm extends Dialog {
                 setBookingBinder();
                 ticket = new Tickets();
                 bookingBinder.writeBean(ticket);
-                ticket.setPnr(generatePnrNo());
-                ticket.setBookingId(generateBookingId());
+                ticket.setPnr(bookingPresenter.generatePnrNo());
+                ticket.setBookingId(bookingPresenter.generateBookingId());
                 ticket.setPassengerList(passengerList);
-                TransportService transportService =(TransportService) VaadinSession.getCurrent().getAttribute("selectedTrain");
+
                 ticket.setTransportService(transportService);
                 UserEntity user = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
                 ticket.setUserEntity(user);
                 Notification.show("Ticket Booked Successfully",2000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_ERROR);
-                System.out.println(ticket);
-                ticketService.addTicket(ticket);
+                bookingPresenter.saveTicket(ticket);
                 close();
             } catch (ValidationException e) {
                 throw new RuntimeException(e);
@@ -168,13 +179,7 @@ public class ReservationForm extends Dialog {
 
 
 
-    private Long generatePnrNo() {
-        return ThreadLocalRandom.current().nextLong(999999L,9999999L);
-    }
 
-    private Long generateBookingId(){
-        return ThreadLocalRandom.current().nextLong(99999999L,999999999L);
-    }
 
     private void setPassengerBinder(){
 

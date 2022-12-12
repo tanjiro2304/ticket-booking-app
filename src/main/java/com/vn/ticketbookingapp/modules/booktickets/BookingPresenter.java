@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SpringComponent
 @UIScope
@@ -30,5 +31,13 @@ public class BookingPresenter extends BasePresenter<BookingView> {
 
     public List<TransportService> getTrains(){
         return bookingService.getTransportServiceList();
+    }
+
+    Long generatePnrNo() {
+        return ThreadLocalRandom.current().nextLong(999999L,9999999L);
+    }
+
+    Long generateBookingId(){
+        return ThreadLocalRandom.current().nextLong(99999999L,999999999L);
     }
 }

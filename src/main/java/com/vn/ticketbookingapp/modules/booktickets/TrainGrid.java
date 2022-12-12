@@ -39,7 +39,7 @@ public class TrainGrid extends Grid<TransportService> {
                             2000,
                             Notification.Position.TOP_END).addThemeVariants(NotificationVariant.LUMO_ERROR);
                 } else {
-                    VaadinSession.getCurrent().setAttribute("selectedTrain",getSelectedItems().
+                    reservationForm.setTransportService(getSelectedItems().
                             stream().
                             findFirst().
                             get());
