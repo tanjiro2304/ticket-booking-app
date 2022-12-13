@@ -12,7 +12,7 @@ public interface TicketService {
 
     public void addTicket(Tickets ticket);
 
-    List<Tickets> getTicketOfCurrentUser();
+    List<Tickets> getTicketOfCurrentUser(String username);
 
-    List<Passenger> getPassengerListFromTicket(Tickets ticket);
+    List<Passenger> getPassengerListFromTicket(Long pnr);
 }

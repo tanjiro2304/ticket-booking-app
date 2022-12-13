@@ -40,5 +40,5 @@ public class UserEntity {
     private String emailId;
 
     @OneToMany(mappedBy = "userEntity")
-    List<Tickets> bookedTickets;
+    private List<Tickets> bookedTickets;
 }

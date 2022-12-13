@@ -6,8 +6,6 @@ import com.vaadin.flow.router.Route;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import com.vn.ticketbookingapp.templates.SecondaryTemplate;
 
-import javax.annotation.PostConstruct;
-
 
 @Route(value = "/search-trains",layout = SecondaryTemplate.class)
 public class SearchView extends BaseView<SearchPresenter> {

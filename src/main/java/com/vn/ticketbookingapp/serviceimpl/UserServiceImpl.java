@@ -1,17 +1,19 @@
 package com.vn.ticketbookingapp.serviceimpl;
 
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.converter.UserConverter;
 import com.vn.ticketbookingapp.dto.User;
+import com.vn.ticketbookingapp.entities.Passenger;
+import com.vn.ticketbookingapp.entities.Tickets;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.repository.UserRepository;
 import com.vn.ticketbookingapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +27,16 @@ public class UserServiceImpl implements UserService {
         return userRepositoryImpl.findAll().stream().map(UserConverter::convertToDTO).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public List<Tickets> getTicketsList(String username) {
+        UserEntity userEntity = userRepositoryImpl.findByUserName(username);
+        List<Tickets> bookedTickets = userEntity.getBookedTickets();
+        for (Tickets tickets :bookedTickets){
+            tickets.getPassengerList();
+        }
+        return bookedTickets;
+    }
 
     @Override
     public Boolean userExists(UserEntity userEntity){
@@ -38,6 +50,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(UserEntity userEntity){
         userRepositoryImpl.save(userEntity);
+    }
+
+    @Override
+    public UserEntity getUserByUsername(String username) {
+        return userRepositoryImpl.findByUserName(username);
     }
 
     @Override

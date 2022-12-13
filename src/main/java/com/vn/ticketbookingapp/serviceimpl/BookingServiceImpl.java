@@ -1,7 +1,5 @@
 package com.vn.ticketbookingapp.serviceimpl;
 
-import com.vaadin.flow.spring.annotation.SpringComponent;
-import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.repository.TrainServiceRepository;
 import com.vn.ticketbookingapp.service.BookingService;

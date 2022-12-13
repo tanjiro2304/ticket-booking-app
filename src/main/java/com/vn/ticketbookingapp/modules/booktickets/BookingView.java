@@ -7,17 +7,12 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.VaadinSession;
-import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import com.vn.ticketbookingapp.service.BookingService;
 import com.vn.ticketbookingapp.templates.SecondaryTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 @Route(value = "booking-ticket", layout = SecondaryTemplate.class)
 public class BookingView extends BaseView<BookingPresenter> {
@@ -79,8 +74,8 @@ public class BookingView extends BaseView<BookingPresenter> {
                 Notification.show("No service between the given two stations", 3000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_ERROR);
 
-                layout.add(bookTicketLayout);
-                add(layout);
+//                layout.add(bookTicketLayout);
+//                add(layout);
             }
         });
     }

@@ -19,7 +19,6 @@ import com.vaadin.flow.router.Route;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 
-import javax.annotation.PostConstruct;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

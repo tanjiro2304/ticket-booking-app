@@ -1,6 +1,9 @@
 package com.vn.ticketbookingapp.modules.servicemenu;
 
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -11,8 +14,6 @@ import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.mvputils.BaseView;
 import com.vn.ticketbookingapp.templates.SecondaryTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
 
 @SpringComponent
 @UIScope

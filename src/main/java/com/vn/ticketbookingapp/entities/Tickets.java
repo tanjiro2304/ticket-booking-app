@@ -31,7 +31,7 @@ public class Tickets {
     private LocalDate dateOfJourney;
 
     @Column
-    @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ticket")
     List<Passenger> passengerList;
 
     @ManyToOne

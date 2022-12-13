@@ -31,7 +31,7 @@ public class HomeView extends BaseView<HomePresenter>  {
     @Override
     protected void init() {
 
-        Grid<Passenger> passengerGrid = new Grid<>();
+
         loginButton = new Button("Login");
         loginButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 

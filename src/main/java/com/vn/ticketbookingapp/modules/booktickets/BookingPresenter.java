@@ -5,7 +5,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.entities.Tickets;
 import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.mvputils.BasePresenter;
-import com.vn.ticketbookingapp.mvputils.BaseView;
 import com.vn.ticketbookingapp.service.BookingService;
 import com.vn.ticketbookingapp.service.TicketService;
 import lombok.Getter;
