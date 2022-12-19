@@ -27,31 +27,36 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public HashSet<String> serviceTypes() {
-        return new HashSet<>(trainServiceRepository.findAll().
+        return trainServiceRepository.findAll().
                 stream().
-                map(TransportService::getServiceType).
-                collect(Collectors.toSet())) ;
+                map(TransportService::getServiceType).collect(Collectors.toCollection(HashSet::new));
     }
 
     public HashSet<String> stations() {
 
 
 
-        return new HashSet<>(trainServiceRepository.findAll().
+        return trainServiceRepository.findAll().
                 stream().
-                map(TransportService::getSource).
-                collect(Collectors.toSet())) ;
+                map(TransportService::getSource).collect(Collectors.toCollection(HashSet::new));
     }
 
     @Override
     public List<String> listOfServices() {
-        List<String> allStations = new ArrayList<>(serviceTypes());
-        return allStations;
+        return new ArrayList<>(serviceTypes());
+    }
+
+    public List<TransportService> filterByServiceType(String serviceType, List<TransportService> transportServiceList){
+        return transportServiceList.stream().
+                filter(transportService -> transportService.getServiceType().equals(serviceType)).
+                collect(Collectors.toList());
     }
 
     @Override
-    public Boolean trainFound(String source, String destination) {
+    public Boolean trainFound(String source, String destination, String serviceType) {
         transportServiceList =trainServiceRepository.findBySourceAndDestination(source, destination);
+
+        transportServiceList = filterByServiceType(serviceType,getTransportServiceList());
         if( transportServiceList.isEmpty()){
             return false;
         }

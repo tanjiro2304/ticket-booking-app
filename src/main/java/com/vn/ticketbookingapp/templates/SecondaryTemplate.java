@@ -3,6 +3,7 @@ package com.vn.ticketbookingapp.templates;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
@@ -21,6 +22,7 @@ import com.vn.ticketbookingapp.modules.servicemenu.TimeTableView;
 
 @UIScope
 @SpringComponent
+//@CssImport("./styles/style.css")
 public class SecondaryTemplate extends AppLayout {
 
     private Tabs tabs;
@@ -58,6 +60,8 @@ public class SecondaryTemplate extends AppLayout {
         if(tabs.getSelectedTab().equals(tab)){
             content.add(new TimeTableView());
         }
+
+
 
         addToDrawer(tabs);
     }

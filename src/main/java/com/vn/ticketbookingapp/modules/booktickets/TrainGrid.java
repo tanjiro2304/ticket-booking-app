@@ -30,23 +30,17 @@ public class TrainGrid extends Grid<TransportService> {
         addColumn(TransportService::getArrival).setHeader("Arrival");
         addColumn(TransportService::getDeparture).setHeader("Departure");
         addColumn(TransportService::getTravelTime).setHeader("Travel Time");
-        addComponentColumn(book -> {
+        addComponentColumn(trainService -> {
             Button bookButton = new Button("Book Tickets");
-            bookButton.addClickListener(event -> {
-                if (getSelectedItems().isEmpty()) {
-                    Notification.show("Please select a train to book ticket.",
-                            2000,
-                            Notification.Position.TOP_END).addThemeVariants(NotificationVariant.LUMO_ERROR);
-                } else {
-                    reservationForm.setTransportService(getSelectedItems().
-                            stream().
-                            findFirst().
-                            get());
-                    reservationForm.open();
-                }
+            bookButton.addClickListener(event ->
+
+            {
+                reservationForm.setTransportService(trainService);
+                reservationForm.open();
             });
             return bookButton;
         });
 
     }
 }
+

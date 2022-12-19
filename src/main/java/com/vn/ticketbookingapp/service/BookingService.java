@@ -19,5 +19,6 @@ public interface BookingService {
 
     public List<TransportService> getTransportServiceList();
 
-    public Boolean trainFound(String source, String Destination);
+
+    Boolean trainFound(String source, String destination, String serviceType);
 }

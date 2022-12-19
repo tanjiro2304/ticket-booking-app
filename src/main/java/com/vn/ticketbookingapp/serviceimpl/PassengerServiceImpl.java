@@ -16,8 +16,11 @@ public class PassengerServiceImpl implements PassengerService {
     PassengerRepo passengerRepo;
 
 
+
+
     @Override
     public List<Passenger> getPassengerList(Tickets ticket) {
+        List<Passenger> passengerList = passengerRepo.findByTicket(ticket);
         return passengerRepo.findByTicket(ticket);
     }
 }

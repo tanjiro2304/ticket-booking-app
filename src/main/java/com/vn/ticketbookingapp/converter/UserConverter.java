@@ -12,7 +12,7 @@ public class UserConverter {
                 userId(userEntity.getUserId()).
                 contactNo(userEntity.getContactNo()).
                 emailId(userEntity.getEmailId()).
-                bookedTickets(userEntity.getBookedTickets()).
+//                bookedTickets(userEntity.getBookedTickets()).
                 build();
     }
     public static User convertToUserEntity(User user){

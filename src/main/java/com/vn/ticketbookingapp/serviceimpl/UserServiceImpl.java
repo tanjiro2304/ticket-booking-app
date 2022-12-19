@@ -5,15 +5,15 @@ import com.vn.ticketbookingapp.converter.UserConverter;
 import com.vn.ticketbookingapp.dto.User;
 import com.vn.ticketbookingapp.entities.Passenger;
 import com.vn.ticketbookingapp.entities.Tickets;
+import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import com.vn.ticketbookingapp.repository.UserRepository;
 import com.vn.ticketbookingapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,15 +27,22 @@ public class UserServiceImpl implements UserService {
         return userRepositoryImpl.findAll().stream().map(UserConverter::convertToDTO).collect(Collectors.toList());
     }
 
+
+
     @Override
-    @Transactional
-    public List<Tickets> getTicketsList(String username) {
-        UserEntity userEntity = userRepositoryImpl.findByUserName(username);
-        List<Tickets> bookedTickets = userEntity.getBookedTickets();
-        for (Tickets tickets :bookedTickets){
-            tickets.getPassengerList();
-        }
-        return bookedTickets;
+    public Set<Tickets> getTicketsList(String username) {
+        UserEntity user = userRepositoryImpl.findByUserName(username);
+        return user.getBookedTickets();
+    }
+
+    @Override
+    public TransportService getService(Tickets ticket) {
+        return ticket.getTransportService();
+    }
+
+
+    public Set<Passenger> passengerSet(Tickets ticket){
+        return ticket.getPassengerList();
     }
 
     @Override

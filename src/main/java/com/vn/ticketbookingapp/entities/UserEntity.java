@@ -4,15 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraph(name="UserEntity.bookedTickets",
+        attributeNodes = @NamedAttributeNode("bookedTickets"),
+        subgraphs = {@NamedSubgraph(name = "bookedTickets", attributeNodes = @NamedAttributeNode("passengerList")),
+                @NamedSubgraph(name = "bookedTickets", attributeNodes = @NamedAttributeNode("transportService"))})
+
 @Table(name="tbl_user_entity")
 public class UserEntity {
     @Id
@@ -40,5 +47,5 @@ public class UserEntity {
     private String emailId;
 
     @OneToMany(mappedBy = "userEntity")
-    private List<Tickets> bookedTickets;
+    private Set<Tickets> bookedTickets;
 }

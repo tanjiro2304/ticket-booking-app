@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -31,8 +32,8 @@ public class Tickets {
     private LocalDate dateOfJourney;
 
     @Column
-    @OneToMany(mappedBy = "ticket")
-    List<Passenger> passengerList;
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    Set<Passenger> passengerList;
 
     @ManyToOne
     private UserEntity userEntity;

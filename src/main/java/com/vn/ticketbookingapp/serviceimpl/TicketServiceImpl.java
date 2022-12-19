@@ -39,12 +39,12 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Passenger> getPassengerListFromTicket(Long pnr) {
-        UserEntity user = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
-        for(Tickets ticket : user.getBookedTickets()){
-            if(Objects.equals(ticket.getPnr(), pnr)){
-                return ticket.getPassengerList();
-            }
-        }
+//        UserEntity user = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
+//        for(Tickets ticket : user.getBookedTickets()){
+//            if(Objects.equals(ticket.getPnr(), pnr)){
+//                return ticket.getPassengerList();
+//            }
+//        }
         return null;
     }
 }

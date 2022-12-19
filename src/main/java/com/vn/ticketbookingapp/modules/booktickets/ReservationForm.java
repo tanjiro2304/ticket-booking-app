@@ -22,7 +22,9 @@ import com.vn.ticketbookingapp.entities.Passenger;
 import com.vn.ticketbookingapp.entities.Tickets;
 import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.entities.UserEntity;
+import com.vn.ticketbookingapp.modules.bookinghistory.TicketHistoryGrid;
 import com.vn.ticketbookingapp.service.TicketService;
+import com.vn.ticketbookingapp.serviceimpl.BookingServiceImpl;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,7 +32,9 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @UIScope
 @SpringComponent
@@ -61,6 +65,8 @@ public class ReservationForm extends Dialog {
 
     private Button bookButton;
 
+    private BookingServiceImpl bookingService;
+
     private DatePicker datePicker;
 
     private Binder<Tickets> bookingBinder;
@@ -76,15 +82,22 @@ public class ReservationForm extends Dialog {
 
     private Passenger passenger;
 
-    private List<Passenger> passengerList;
+    private Set<Passenger> passengerList;
 
     private Button submitButton;
 
     private Grid<Passenger> passengerGrid;
 
+    @Autowired
+    private TicketHistoryGrid ticketHistoryGrid;
+
     private Button addButton;
 
     private Button saveButton;
+
+    private Button removeButton;
+
+    private Long bookingId;
 
     public TransportService getTransportService() {
         return transportService;
@@ -96,6 +109,7 @@ public class ReservationForm extends Dialog {
 
     @PostConstruct
     public void init() {
+        bookingId = getBookingPresenter().generateBookingId();
         setSizeFull();
         ticket = new Tickets();
         formLayout = new FormLayout();
@@ -103,7 +117,7 @@ public class ReservationForm extends Dialog {
         passengerFirstName = new TextField("First Name");
         passengerLastName = new TextField("Last Name");
 
-        passengerList = new ArrayList<>();
+        passengerList = new HashSet<>();
         age = new IntegerField("Age");
         contactNo = new TextField("Contact No");
         bookButton = new Button("Book");
@@ -112,7 +126,9 @@ public class ReservationForm extends Dialog {
         gender = new ComboBox<>("Gender");
         gender.setItems("Male","Female");
         addButton = new Button("Add");
-        addButton.setIcon(VaadinIcon.ADD_DOCK.create());
+        addButton.setIcon(VaadinIcon.PLUS.create());
+        removeButton = new Button("Remove");
+        removeButton.setIcon(VaadinIcon.MINUS.create());
         saveButton = new Button("Save");
         saveButton.setIcon(VaadinIcon.DISC.create());
 
@@ -129,21 +145,25 @@ public class ReservationForm extends Dialog {
 
 
         cancelButton.addClickListener(event -> close());
+        createTicket();
         bookButton.addClickListener(event -> {
+
             try {
+
                 setBookingBinder();
-                ticket = new Tickets();
+
                 bookingBinder.writeBean(ticket);
                 ticket.setPnr(bookingPresenter.generatePnrNo());
-                ticket.setBookingId(bookingPresenter.generateBookingId());
                 ticket.setPassengerList(passengerList);
-
                 ticket.setTransportService(transportService);
                 UserEntity user = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
                 ticket.setUserEntity(user);
                 Notification.show("Ticket Booked Successfully",2000, Notification.Position.TOP_END).
                         addThemeVariants(NotificationVariant.LUMO_ERROR);
                 bookingPresenter.saveTicket(ticket);
+                ticketHistoryGrid.getTicketsList().add(ticket);
+
+
                 close();
             } catch (ValidationException e) {
                 throw new RuntimeException(e);
@@ -156,21 +176,45 @@ public class ReservationForm extends Dialog {
                 try {
                     passenger =new Passenger();
                     passengerBinder.writeBean(passenger);
+                    passenger.setTicket(ticket);
                 } catch (ValidationException e) {
                     throw new RuntimeException(e);
                 }
                 passengerList.add(passenger);
                 passengerGrid.setItems(passengerList);
-                passengerGrid.getDataProvider().refreshAll();
-                Notification.show("Passenger Added Successfully");
 
+
+                passengerGrid.getDataProvider().refreshAll();
+                Notification.show("Passenger Added Successfully",3000, Notification.Position.TOP_END).
+                        addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             }
             else{
                 Notification.show("Please fill the details correctly");
             }
         });
+
+        removeButton.addClickListener(event -> {
+            Passenger passenger1 = passengerGrid.getSelectedItems().stream().findFirst().orElse(null);
+            if(passenger1==null){
+                Notification.show("Please select a passenger to remove",3000, Notification.Position.TOP_END)
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }else{
+                passengerList.remove(passenger1);
+                passengerGrid.setItems(passengerList);
+                passengerGrid.getDataProvider().refreshAll();
+            }
+        });
+
+
+
         HorizontalLayout horizontalLayout = new HorizontalLayout(contactNo,datePicker);
-        add(new H1("Add Passengers"),addButton, horizontalLayout,passengerGrid, bookButton,cancelButton);
+        HorizontalLayout buttons = new HorizontalLayout(addButton,removeButton);
+        add(new H1("Add Passengers"), horizontalLayout,buttons,passengerGrid, bookButton,cancelButton);
+    }
+
+    public void createTicket(){
+        ticket = new Tickets();
+        ticket.setBookingId(bookingId);
     }
 
 
