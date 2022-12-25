@@ -7,7 +7,9 @@ import com.vn.ticketbookingapp.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PassengerServiceImpl implements PassengerService {
@@ -19,8 +21,8 @@ public class PassengerServiceImpl implements PassengerService {
 
 
     @Override
-    public List<Passenger> getPassengerList(Tickets ticket) {
-        List<Passenger> passengerList = passengerRepo.findByTicket(ticket);
-        return passengerRepo.findByTicket(ticket);
+    public Set<Passenger> getPassengerList(Tickets ticket) {
+        Set<Passenger> passengerList = new HashSet<>(passengerRepo.findByTicket(ticket));
+        return passengerList;
     }
 }

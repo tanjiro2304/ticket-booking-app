@@ -13,6 +13,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vn.ticketbookingapp.entities.Passenger;
 import com.vn.ticketbookingapp.entities.Tickets;
+import com.vn.ticketbookingapp.entities.TransportService;
 import com.vn.ticketbookingapp.entities.UserEntity;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 @UIScope
 @SpringComponent
@@ -42,6 +44,8 @@ public class TicketHistoryGrid extends Grid<Tickets> {
 
     private Set<Tickets> ticketsList;
 
+    private TransportService trainService;
+
     @Autowired
     private HistoryPresenter historyPresenter;
 
@@ -49,7 +53,12 @@ public class TicketHistoryGrid extends Grid<Tickets> {
     public void init(){
         ticket = new Tickets();
         UserEntity user = (UserEntity) VaadinSession.getCurrent().getAttribute("user");
-        ticketsList = historyPresenter.getBookedTickets(user.getUserName());
+        try{
+            ticketsList = historyPresenter.getBookedTickets(user.getUserName());
+        }catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
         addColumn(Tickets::getBookingId).setHeader("Booking Id");
         addColumn(Tickets::getDateOfJourney).setHeader("Date Of Journey");
 
@@ -71,6 +80,7 @@ public class TicketHistoryGrid extends Grid<Tickets> {
 
     public void setTicketInfoDialog(Tickets ticket){
         title = new H2("Ticket Details");
+
         ticketInfoDialog = new Dialog();
         ticketInfoDialog.setSizeFull();
 

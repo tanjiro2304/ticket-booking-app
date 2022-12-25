@@ -4,7 +4,8 @@ import com.vn.ticketbookingapp.entities.Passenger;
 import com.vn.ticketbookingapp.entities.Tickets;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PassengerService {
-    public List<Passenger> getPassengerList(Tickets ticket);
+    public Set<Passenger> getPassengerList(Tickets ticket);
 }
